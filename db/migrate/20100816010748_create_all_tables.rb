@@ -1,36 +1,5 @@
 class CreateAllTables < ActiveRecord::Migration
   def self.up
-    create_table "achievements", :force => true do |t|
-      t.integer  "user_id"
-      t.string   "honor"
-      t.datetime "created_at"
-      t.datetime "updated_at"
-    end
-
-    add_index "achievements", ["honor"], :name => "index_achievementings_on_achievement_id"
-    add_index "achievements", ["user_id"], :name => "index_achievementings_on_user_id"
-
-    create_table "contactings", :force => true do |t|
-      t.integer  "host_id"
-      t.integer  "contact_id"
-      t.datetime "created_at"
-      t.datetime "updated_at"
-      t.boolean  "show_share"
-    end
-
-    add_index "contactings", ["contact_id"], :name => "index_contacts_on_friend_id"
-    add_index "contactings", ["host_id"], :name => "index_contacts_on_host_id"
-
-    create_table "invitations", :force => true do |t|
-      t.integer  "host_id"
-      t.string   "contact_email"
-      t.string   "uuid"
-      t.datetime "created_at"
-      t.datetime "updated_at"
-    end
-
-    add_index "invitations", ["host_id"], :name => "index_invitations_on_host_id"
-
     create_table "online_records", :force => true do |t|
       t.integer  "user_id"
       t.string   "key"

@@ -159,7 +159,4 @@ class User < UserBase
     img_type.write File.expand_path(ATTACHED_FILE_PATH_ROOT)+"/users/logos/#{self.id}/#{type}/#{self.logo_file_name}"
   end
 
-  include Contacting::HostMethods
-  include Invitation::HostMethods
-  include Achievement::UserMethods
 end
