@@ -2,7 +2,7 @@
 
 .cin
   = flash_info
-  - form_for current_user,:url=>"/account",:html=>{:method=>:post} do |f|
+  - mindpin_form_for current_user,:url=>"/account",:html=>{:method=>:put} do |f|
     %h2 基本信息设置
     = hr
     .p
@@ -26,7 +26,7 @@
       = logo current_user,:tiny
       = logo current_user,:mini
       %div
-        = link_to "设置头像",edit_logo_user_path(current_user)
+        = link_to "设置头像","/avatared"
     = hr
     .p.indent
       = t('page.account.base.password_caption')

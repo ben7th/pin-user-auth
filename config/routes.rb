@@ -12,9 +12,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resource :session
 
-  map.resources :users,:member=>{
-    :logo=>:put,:edit_logo=>:get
-  },:collection=>{:send_activation_mail=>:get}
+  map.resources :users,:collection=>{:send_activation_mail=>:get}
 
   # 激活用户
   map.activate '/activate/:activation_code',:controller=>'users',:action=>'activate'
@@ -29,9 +27,14 @@ ActionController::Routing::Routes.draw do |map|
   # ----------------- 设置相关 ----------
   map.resource :preference,:collection=>{:selector=>:get,:ajax_theme_change=>:get}
 
+  # 基本信息
   map.user_base_info "/account",:controller=>"account",:action=>"base",:conditions=>{:method=>:get}
-  map.user_base_info_submit "/account",:controller=>"account",:action=>"base_submit",:conditions=>{:method=>:post}
+  map.user_base_info_submit "/account",:controller=>"account",:action=>"base_submit",:conditions=>{:method=>:put}
 
-  map.user_avatared_info "/account/avatared",:controller=>"account",:action=>"avatared"
-  map.user_email_info "/account/email",:controller=>"account",:action=>"email"
+  # 头像设置
+  map.user_avatared_info "/avatared",:controller=>"account",:action=>"avatared",:conditions=>{:method=>:get}
+  map.user_avatared_info_submit "/avatared",:controller=>"account",:action=>"avatared_submit",:conditions=>{:method=>:put}
+
+
+  map.user_email_info "/email",:controller=>"account",:action=>"email"
 end

@@ -22,18 +22,30 @@ class AccountController < ActionController::Base
       end
     end
     redirect_to :action=>:base
-#    responds_to_parent do
-#      render_ui do |ui|
-#        ui.cell @user,:partial=>"users/cell_edit",:position=>:paper
-#        ui.page << %`
-#              $$("#logo_user_#{@user.id}").each(function(logo){
-#                logo.src = "#{@user.logo.url}";
-#              })
-#              $$("#logo_user_#{@user.id}_tiny").each(function(logo){
-#                logo.src = "#{@user.logo.url(:tiny)}";
-#              })
-        #`
-#      end
-#    end
+    #    responds_to_parent do
+    #      render_ui do |ui|
+    #        ui.cell @user,:partial=>"users/cell_edit",:position=>:paper
+    #        ui.page << %`
+    #              $$("#logo_user_#{@user.id}").each(function(logo){
+    #                logo.src = "#{@user.logo.url}";
+    #              })
+    #              $$("#logo_user_#{@user.id}_tiny").each(function(logo){
+    #                logo.src = "#{@user.logo.url(:tiny)}";
+    #              })
+    #`
+    #      end
+    #    end
   end
+
+  # 修改头像
+  def avatared_submit
+    if !params[:copper]
+      current_user.update_attributes({:logo=>params[:user][:logo]})
+      return render :template=>"account/copper_avatared"
+    else
+      current_user.copper_logo(params)
+      redirect_to :action=>:base
+    end
+  end
+  
 end

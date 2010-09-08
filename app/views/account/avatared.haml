@@ -1,0 +1,5 @@
+.padding5
+  = flash_info
+  - mindpin_form_for current_user,:url=>"/avatared",:method=>:put,:html=>{:multipart=>true} do |f|
+    = f.file_field(:logo)
+    = f.submit "上传图片"

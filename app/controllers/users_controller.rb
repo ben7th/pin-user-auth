@@ -47,25 +47,6 @@ class UsersController < ApplicationController
     end
   end
 
-  def edit_logo
-    return if is_current_user?
-    redirect_to :action=>'show'
-  end
-
-  def logo
-    return redirect_to :action=>'show' if !is_current_user?
-    if !params[:copper]
-      current_user.update_attributes({:logo=>params[:user][:logo]})
-      return render :template=>"users/copper_logo"
-    end
-    _copper
-  end
-
-  def _copper
-    current_user.copper_logo(params)
-    return redirect_to :action => "edit"
-  end
-
   def activate
     if !params[:activation_code].blank?
       @user = User.find_by_activation_code(params[:activation_code])

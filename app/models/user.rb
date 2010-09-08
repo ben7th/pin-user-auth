@@ -156,7 +156,7 @@ class User < UserBase
 
   def _resize_logo(img,type,width,height)
     img_type = img.resize(width,height)
-    img_type.write File.expand_path(ATTACHED_FILE_PATH_ROOT)+"/users/logos/#{self.id}/#{type}/#{self.logo_file_name}"
+    img_type.write File.expand_path(LOGO_PATH_ROOT)+"/users/logos/#{self.id}/#{type}/#{self.logo_file_name}"
   end
 
 end
