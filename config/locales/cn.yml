@@ -4,6 +4,15 @@ cn:
       remember_me: 记住我
       login: 登 录
       forgot_password: <em>&gt;</em> 忘记密码了？
+    account:
+      base:
+        join_time: 加入时间
+        email: 电子邮件
+        logo: 头像
+        password_caption: 如果需要修改密码，请在下面填写，不修改，则不用填写
+        password: 新密码：
+        password_confirmation: 确认新密码：
+        from_submit: 确定修改
   activerecord:
     attributes:
       user:

@@ -47,12 +47,6 @@ class UsersController < ApplicationController
     end
   end
 
-  def edit
-    # 如果被请求的用户不是当前登录用户，则跳转到show方法
-    return if is_current_user?
-    redirect_to :action=>'show'
-  end
-
   def edit_logo
     return if is_current_user?
     redirect_to :action=>'show'
@@ -70,36 +64,6 @@ class UsersController < ApplicationController
   def _copper
     current_user.copper_logo(params)
     return redirect_to :action => "edit"
-  end
-
-  def update
-    if is_current_user?
-      @user=User.find(params[:id])
-      s1=params[:user]
-      @user.password=s1[:password]
-      @user.password_confirmation=s1[:password_confirmation]
-      @user.update_attributes(s1)
-      if @user.save
-        flash.now[:notice]="用户#{@user.name}的信息已经成功修改"
-      else
-        (@user.errors).each do |*error|
-          flash.now[:error]=error*' '
-        end
-      end
-      responds_to_parent do
-        render_ui do |ui|
-          ui.cell @user,:partial=>"users/cell_edit",:position=>:paper
-          ui.page << %`
-              $$("#logo_user_#{@user.id}").each(function(logo){
-                logo.src = "#{@user.logo.url}";
-              })
-              $$("#logo_user_#{@user.id}_tiny").each(function(logo){
-                logo.src = "#{@user.logo.url(:tiny)}";
-              })
-          `
-        end
-      end
-    end
   end
 
   def activate

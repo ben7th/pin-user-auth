@@ -28,4 +28,10 @@ ActionController::Routing::Routes.draw do |map|
 
   # ----------------- 设置相关 ----------
   map.resource :preference,:collection=>{:selector=>:get,:ajax_theme_change=>:get}
+
+  map.user_base_info "/account",:controller=>"account",:action=>"base",:conditions=>{:method=>:get}
+  map.user_base_info_submit "/account",:controller=>"account",:action=>"base_submit",:conditions=>{:method=>:post}
+
+  map.user_avatared_info "/account/avatared",:controller=>"account",:action=>"avatared"
+  map.user_email_info "/account/email",:controller=>"account",:action=>"email"
 end

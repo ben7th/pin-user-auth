@@ -1,0 +1,40 @@
+/=render :partial=>"preferences/cell_selector"
+
+.cin
+  = flash_info
+  - form_for current_user,:url=>"/account",:html=>{:method=>:post} do |f|
+    %h2 基本信息设置
+    = hr
+    .p
+      %div 邮箱地址
+      .mail= current_user.email
+      %div
+        - if current_user.activated?
+        %span 已激活
+        - else
+        %span 未激活
+        %span= link_to_remote '&gt; 发送激活邮件',:url=>send_activation_mail_users_path,:method=>:get
+    = hr
+    = f.text_field(:name)
+    .p
+      = t('page.account.base.join_time')
+      = created_at current_user
+    = hr
+    .p
+      = logo current_user,:medium
+      = logo current_user,:normal
+      = logo current_user,:tiny
+      = logo current_user,:mini
+      %div
+        = link_to "设置头像",edit_logo_user_path(current_user)
+    = hr
+    .p.indent
+      = t('page.account.base.password_caption')
+    .p
+      %label= t('page.account.base.password')
+      = password_field :user,:password,:value=>'',:maxlength=>32,:class=>'text'
+    .p
+      %label= t('page.account.base.password_confirmation')
+      = password_field :user,:password_confirmation,:value=>'',:maxlength=>32,:class=>'text'
+    = hr
+    = f.submit t('page.account.base.from_submit')
