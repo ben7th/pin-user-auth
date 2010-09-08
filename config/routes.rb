@@ -1,43 +1,34 @@
 ActionController::Routing::Routes.draw do |map|
-  # The priority is based upon order of creation: first created -> highest priority.
+  map.root :controller=>'index'
+  #  map.root :controller=>'index',:action=>'updating'
+  map.dev '/index',:controller=>'index',:action=>'index'
+  map.welcome '/welcome',:controller=>'index',:action=>'welcome'
+  # ---------------- 用户认证相关 -----------
 
-  # Sample of regular route:
-  #   map.connect 'products/:id', :controller => 'catalog', :action => 'view'
-  # Keep in mind you can assign values other than :controller and :action
+  map.login_ajax '/login_ajax',:controller=>'sessions',:action=>'new_ajax'
+  map.login_fbox '/login_fbox',:controller=>'sessions',:action=>'login_fbox'
+  map.login_fbox_create '/login_fbox_create',:controller=>'sessions',:action=>'login_fbox_create'
+  map.login '/login',:controller=>'sessions',:action=>'new'
+  map.logout '/logout',:controller=>'sessions',:action=>'destroy'
+  map.signup '/signup',:controller=>'users',:action=>'new'
 
-  # Sample of named route:
-  #   map.purchase 'products/:id/purchase', :controller => 'catalog', :action => 'purchase'
-  # This route can be invoked with purchase_url(:id => product.id)
+  map.resource :session
 
-  # Sample resource route (maps HTTP verbs to controller actions automatically):
-  #   map.resources :products
+  map.resources :users,:member=>{
+    :logo=>:put,:edit_logo=>:get
+  },:collection=>{:send_activation_mail=>:get}
 
-  # Sample resource route with options:
-  #   map.resources :products, :member => { :short => :get, :toggle => :post }, :collection => { :sold => :get }
+  map.activate '/activate/:activation_code',:controller=>'users',:action=>'activate'
 
-  # Sample resource route with sub-resources:
-  #   map.resources :products, :has_many => [ :comments, :sales ], :has_one => :seller
-  
-  # Sample resource route with more complex sub-resources
-  #   map.resources :products do |products|
-  #     products.resources :comments
-  #     products.resources :sales, :collection => { :recent => :get }
-  #   end
+  map.forgot_password_form '/forgot_password_form',:controller=>'users',:action=>'forgot_password_form'
+  map.forgot_password '/forgot_password',:controller=>'users',:action=>'forgot_password'
 
-  # Sample resource route within a namespace:
-  #   map.namespace :admin do |admin|
-  #     # Directs /admin/products/* to Admin::ProductsController (app/controllers/admin/products_controller.rb)
-  #     admin.resources :products
-  #   end
+  map.reset_password '/reset_password/:pw_code',:controller=>'users',:action=>'reset_password'
+  map.change_password '/change_password/:pw_code',:controller=>'users',:action=>'change_password'
 
-  # You can have the root of your site routed with map.root -- just remember to delete public/index.html.
-  # map.root :controller => "welcome"
 
-  # See how all your routes lay out with "rake routes"
+  # ----------------- 设置相关 ----------
 
-  # Install the default routes as the lowest priority.
-  # Note: These default routes make all actions in every controller accessible via GET requests. You should
-  # consider removing or commenting them out if you're using named routes and resources.
-  map.connect ':controller/:action/:id'
-  map.connect ':controller/:action/:id.:format'
+  map.resources :settings
+  map.resource :preference,:collection=>{:selector=>:get,:ajax_theme_change=>:get}
 end

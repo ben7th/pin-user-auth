@@ -8,10 +8,6 @@ class SessionsController < ApplicationController
     render :template=>'auth/login'
   end
 
-  def v09_new
-    render :layout=>'black_index'
-  end
-
   def new_ajax
     if request.xhr?
       session[:return_to] = params[:return_url] if params[:return_url]
@@ -28,7 +24,7 @@ class SessionsController < ApplicationController
 
   # 弹出框登陆界面提交后的处理
   def login_fbox_create
-    self.current_user = params[:v09].blank? ? User.authenticate(params[:email],params[:password]) : User.v09_authenticate(params[:name],params[:password])
+    self.current_user = User.authenticate(params[:email],params[:password])
     responds_to_parent do
       logged_in? ? login_success_and_refresh_page : login_failure
     end
@@ -54,9 +50,6 @@ class SessionsController < ApplicationController
   end
   
   def create
-    if params[:v09]
-      return _v09_login
-    end
     _login
   end
 
@@ -69,31 +62,13 @@ class SessionsController < ApplicationController
         session[:return_to] = nil
         return
       end
-      _redirect_index_or_default_app
+      redirect_to root_url
     else
       flash[:error]="用户名/密码不正确"
       redirect_to login_url
     end
   end
 
-  def _v09_login
-    self.current_user=User.v09_authenticate(params[:name],params[:password])
-    if logged_in?
-      after_logged_in()
-      _redirect_index_or_default_app
-    else
-      flash[:error]="用户名/密码不正确"
-      redirect_to v09_login_url
-    end
-  end
-
-  def _redirect_index_or_default_app
-    if current_user.is_admin?
-      return redirect_to "/admin/index"
-    end
-    redirect_to "/"
-  end
-  
   def destroy
     user=current_user
     if user
