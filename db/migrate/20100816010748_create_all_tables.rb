@@ -6,7 +6,6 @@ class CreateAllTables < ActiveRecord::Migration
       t.datetime "created_at"
       t.datetime "updated_at"
     end
-
     add_index "online_records", ["key"], :name => "index_online_records_on_key"
     add_index "online_records", ["user_id"], :name => "index_online_records_on_user_id"
 
@@ -18,20 +17,7 @@ class CreateAllTables < ActiveRecord::Migration
       t.boolean  "show_tooltip",   :default => true
       t.string   "theme"
     end
-
     add_index "preferences", ["user_id"], :name => "index_preferences_on_user_id"
-
-    create_table "system_settings", :force => true do |t|
-      t.string   "name"
-      t.text     "footer_info"
-      t.text     "login_info"
-      t.string   "logo_file_name"
-      t.string   "logo_content_type"
-      t.integer  "logo_file_size"
-      t.datetime "logo_updated_at"
-      t.datetime "created_at"
-      t.datetime "updated_at"
-    end
 
     create_table "users", :force => true do |t|
       t.string   "name",                      :default => "", :null => false
