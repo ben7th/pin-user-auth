@@ -15,11 +15,10 @@ class UsersController < ApplicationController
     # 出于安全性考虑，新用户注册时销毁cookies令牌
     destroy_cookie_token
     @user=User.new(params[:user])
-
-    # 生成验证码、验证码过期时间、初始激活状态
-    @user.create_activation_code
-
+    
     if @user.save
+      # 发送激活邮件
+      @user.send_activation_mail
       # flash[:success]="注册成功，请使用新帐号登陆"
       login_after_create(@user)
     else
@@ -106,14 +105,14 @@ class UsersController < ApplicationController
   def activate
     if !params[:activation_code].blank?
       @user = User.find_by_activation_code(params[:activation_code])
-      if @user && !@user.activated?
+      if @user
         self.current_user = @user
         @user.activate
-        return render :layout=>'black_page',:template=>"users/activate_success"
+        return render :template=>"users/activate_success"
       end
     end
     @failure = true
-    return render :layout=>'black_page',:template=>"users/activate_success"
+    render :template=>"users/activate_success"
   end
 
   def send_activation_mail
