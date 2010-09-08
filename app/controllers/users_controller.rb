@@ -63,10 +63,8 @@ class UsersController < ApplicationController
   def send_activation_mail
     if !current_user.activated?
       current_user.send_activation_mail
-      flash.now[:notice]="激活邮件已发送，请注意查收"
-      render_ui do |ui|
-        ui.cell current_user,:partial=>"users/cell_edit",:position=>:paper
-      end
+      flash[:notice]="激活邮件已发送，请注意查收"
+      redirect_to :controller=>"account",:action=>"base"
     end
   end
   

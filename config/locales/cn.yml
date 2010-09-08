@@ -20,6 +20,7 @@ cn:
         email: 电子邮箱
         password: 密码
         password_confirmation: 密码确认
+        logo: 头像
     errors:
       errors:
       models:
