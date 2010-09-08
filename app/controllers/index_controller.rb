@@ -1,13 +1,8 @@
 class IndexController < ApplicationController
   def index
     if !logged_in?
-      return render :template=>'auth/index'
+      return render :template=>'auth/index',:layout=>'auth'
     end
-#    respond_to do |format|
-#      format.html do
-#        return render :template => 'index/welcome'
-#      end
-#    end
   end
 
   def updating

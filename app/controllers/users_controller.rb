@@ -8,7 +8,7 @@ class UsersController < ApplicationController
     reset_session
     session[:online_key]=online_key
     @user=User.new
-    render :layout=>'black_index',:template=>'auth/signup'
+    render :layout=>'auth',:template=>'auth/signup'
   end
 
   def create
@@ -24,7 +24,7 @@ class UsersController < ApplicationController
       login_after_create(@user)
     else
       flash.now[:error]=@user.errors.first[1]
-      render :layout=>'black_index',:template=>'auth/signup'
+      render :layout=>'auth',:template=>'auth/signup'
     end
   end
 
@@ -151,7 +151,7 @@ class UsersController < ApplicationController
   
   # 忘记密码时，填写邮件的表单
   def forgot_password_form
-    render :layout=>'black_index',:template=>'auth/forgot_password_form'
+    render :layout=>'auth',:template=>'auth/forgot_password_form'
   end
 
   # 根据邮件地址发送邮件

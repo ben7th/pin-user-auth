@@ -4,8 +4,7 @@ class SessionsController < ApplicationController
   include SessionsMethods
 
   def new
-#    render :layout=>'black_index',:template=>'auth/login'
-    render :template=>'auth/login'
+    render :layout=>'auth',:template=>'auth/login'
   end
 
   def new_ajax
