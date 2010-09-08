@@ -8,7 +8,7 @@
 -form_tag(action,html_param) do
   .form_error.hide
   .field
-   %label=t('activerecord.attributes.user.email')
+    %label=t('activerecord.attributes.user.email')
     =text_field_tag :email,params[:email]
   .field
     %label=t('activerecord.attributes.user.password')

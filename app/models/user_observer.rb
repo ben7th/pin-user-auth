@@ -4,6 +4,7 @@ class UserObserver < ActiveRecord::Observer
     begin
       Mailer.deliver_forgotpassword(user)
     rescue Exception=>e
+      p e
     rescue Net::SMTPFatalError
       p "Net::SMTPFatalError"
     rescue Net::SMTPServerBusy, Net::SMTPUnknownError, Net::SMTPSyntaxError, TimeoutError

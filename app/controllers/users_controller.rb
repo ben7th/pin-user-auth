@@ -28,29 +28,6 @@ class UsersController < ApplicationController
     end
   end
 
-  # 联系人提交的注册
-  def invit_create
-    # 出于安全性考虑，新用户注册时销毁cookies令牌
-    destroy_cookie_token
-    @user=User.new(params[:user])
-
-    # 直接添加为联系人
-    invitation = Invitation.find_by_uuid(params[:uuid])
-    host = invitation.host
-
-    # 直接激活
-    @user.activate
-
-    if @user.save
-      @user.add_contact_with_each_other(host)
-      # flash[:success]="注册并激活成功，请使用新帐号登陆"
-      login_after_create(@user)
-    else
-      flash.now[:error]=@user.errors.first[1]
-      render :layout=>'black_page',:template=>"/invitations/form_register",:locals=>{:invitation=>invitation,:user=>@user}
-    end
-  end
-
   def login_after_create(user)
     self.current_user=user
     after_logged_in()
@@ -174,7 +151,6 @@ class UsersController < ApplicationController
   def reset_password
     @user = User.find_by_reset_password_code(params[:pw_code])
     return redirect_to("/") if @user.blank?
-    render :layout=>'black_page'
   end
 
   # 重置密码
@@ -187,14 +163,14 @@ class UsersController < ApplicationController
     if !pu[:password].blank? && pu[:password] == pu[:password_confirmation]
       if @user.update_attributes(:password=>pu[:password],:reset_password_code=>nil)
         flash.now[:success] = "已成功为 #{@user.name} 重设密码"
-        render :layout=>'black_page',:template=>"users/reset_password_success"
+        render :template=>"users/reset_password_success"
         return
       end
     end
     @user.errors.add(:password,"密码不能为空") if params[:user][:password].blank?
     @user.errors.add(:password_confirmation,"密码和确认密码必须相同") if params[:user][:password] != params[:user][:password_confirmation]
     flash.now[:error] = @user.errors.first[1] if !@user.errors.blank?
-    render :layout=>'black_page',:template=>"users/reset_password"
+    render :template=>"users/reset_password"
   end
 
   private

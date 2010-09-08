@@ -27,6 +27,5 @@ ActionController::Routing::Routes.draw do |map|
 
 
   # ----------------- 设置相关 ----------
-  map.resources :settings
   map.resource :preference,:collection=>{:selector=>:get,:ajax_theme_change=>:get}
 end
