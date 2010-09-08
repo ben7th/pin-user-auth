@@ -44,7 +44,27 @@ class AccountController < ActionController::Base
       return render :template=>"account/copper_avatared"
     else
       current_user.copper_logo(params)
-      redirect_to :action=>:base
+      redirect_to :action=>:avatared
+    end
+  end
+
+  # 发送激活邮件
+  def send_activation_mail
+    if !current_user.activated?
+      current_user.send_activation_mail
+      flash[:notice]="激活邮件已发送，请注意查收"
+      redirect_to :action=>:email
+    end
+  end
+
+  # 用户激活
+  def activate
+    @user = User.find_by_activation_code(params[:activation_code])
+    if @user
+      self.current_user = @user
+      @user.activate
+    else
+      @failure = true
     end
   end
   

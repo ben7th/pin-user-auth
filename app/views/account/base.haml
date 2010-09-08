@@ -4,29 +4,10 @@
   = flash_info
   - mindpin_form_for current_user,:url=>"/account",:html=>{:method=>:put} do |f|
     %h2 基本信息设置
-    = hr
-    .p
-      %div 邮箱地址
-      .mail= current_user.email
-      %div
-        -if current_user.activated?
-          %span 已激活
-        -else
-          %span 未激活
-          %span= link_to '&gt; 发送激活邮件',send_activation_mail_users_path
-    = hr
     = f.text_field(:name)
     .p
       = t('page.account.base.join_time')
       = created_at current_user
-    = hr
-    .p
-      = logo current_user,:medium
-      = logo current_user,:normal
-      = logo current_user,:tiny
-      = logo current_user,:mini
-      %div
-        = link_to "设置头像","/avatared"
     = hr
     .p.indent
       = t('page.account.base.password_caption')

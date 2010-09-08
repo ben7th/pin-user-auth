@@ -11,11 +11,8 @@ ActionController::Routing::Routes.draw do |map|
   map.signup '/signup',:controller=>'users',:action=>'new'
 
   map.resource :session
+  map.resources :users
 
-  map.resources :users,:collection=>{:send_activation_mail=>:get}
-
-  # 激活用户
-  map.activate '/activate/:activation_code',:controller=>'users',:action=>'activate'
   # 忘记密码
   map.forgot_password_form '/forgot_password_form',:controller=>'users',:action=>'forgot_password_form'
   map.forgot_password '/forgot_password',:controller=>'users',:action=>'forgot_password'
@@ -35,6 +32,9 @@ ActionController::Routing::Routes.draw do |map|
   map.user_avatared_info "/avatared",:controller=>"account",:action=>"avatared",:conditions=>{:method=>:get}
   map.user_avatared_info_submit "/avatared",:controller=>"account",:action=>"avatared_submit",:conditions=>{:method=>:put}
 
-
+  # 邮件
   map.user_email_info "/email",:controller=>"account",:action=>"email"
+  map.send_activation_mail "/email/send_activation_mail",:controller=>"account",:action=>"send_activation_mail"
+  # 激活用户
+  map.activate '/activate/:activation_code',:controller=>'account',:action=>'activate'
 end

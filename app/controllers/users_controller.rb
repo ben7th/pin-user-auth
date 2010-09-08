@@ -47,27 +47,6 @@ class UsersController < ApplicationController
     end
   end
 
-  def activate
-    if !params[:activation_code].blank?
-      @user = User.find_by_activation_code(params[:activation_code])
-      if @user
-        self.current_user = @user
-        @user.activate
-        return render :template=>"users/activate_success"
-      end
-    end
-    @failure = true
-    render :template=>"users/activate_success"
-  end
-
-  def send_activation_mail
-    if !current_user.activated?
-      current_user.send_activation_mail
-      flash[:notice]="激活邮件已发送，请注意查收"
-      redirect_to :controller=>"account",:action=>"base"
-    end
-  end
-  
   # 忘记密码时，填写邮件的表单
   def forgot_password_form
     render :layout=>'auth',:template=>'auth/forgot_password_form'
