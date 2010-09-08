@@ -96,7 +96,7 @@ class User < UserBase
 
   # 创建注册激活码
   def create_activation_code
-    self.activation_code = UUID.random_create.to_s
+    self.activation_code = UUIDTools::UUID.random_create.to_s
   end
 
   # 发送激活邮件

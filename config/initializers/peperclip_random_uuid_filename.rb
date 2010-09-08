@@ -19,7 +19,7 @@ module Paperclip
       # Paperclip 会把上传文件的原始名称作为文件名
       # 这里修改为 给文件随机命名
       kouzhanming = uploaded_file.original_filename.split(".").last
-      base_name = UUID.random_create.to_s
+      base_name = UUIDTools::UUID.random_create.to_s
 
       instance_write(:file_name,       "#{base_name}.#{kouzhanming}".strip  )
       instance_write(:content_type,    uploaded_file.content_type.to_s.strip)

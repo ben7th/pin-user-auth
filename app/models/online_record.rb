@@ -39,7 +39,7 @@ class OnlineRecord < ActiveRecord::Base
 
   def self.refresh_anonymous(online_key)
     tidy
-    online_key ||= UUID.random_create.to_s
+    online_key ||= UUIDTools::UUID.random_create.to_s
     rec=find_or_create_by_key(online_key)
     rec.updated_at=Time.now if rec.updated_at.blank? || Time.now-rec.updated_at>5.minutes
     rec.save
