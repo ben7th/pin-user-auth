@@ -8,7 +8,7 @@
 -form_tag(action,html_param) do
   .form_error.hide
   .field
-    %label 电子邮箱
+   %label=t('activerecord.attributes.user.email')
     =text_field_tag :email,params[:email]
   .field
     %label=t('activerecord.attributes.user.password')
@@ -16,6 +16,6 @@
   .form_actions.clearfix
     .fleft.remember-me
       %span=check_box_tag :remember_me,params[:remember_me],false
-      %span 记住我
+      %span=t('page.login_form.remember_me')
     .fright
-      =submit_tag '登 录',:class=>"button"
+      =submit_tag t('page.login_form.login'),:class=>"button"

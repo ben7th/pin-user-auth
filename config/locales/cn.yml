@@ -1,0 +1,11 @@
+cn:
+  page:
+    login_form:
+      remember_me: 记住我
+      login: 登 录
+      forgot_password: <em>&gt;</em> 忘记密码了？
+  activerecord:
+    attributes:
+      user:
+      email: 电子邮箱
+        password: 密码
