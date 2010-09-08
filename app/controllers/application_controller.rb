@@ -2,13 +2,9 @@
 # Likewise, all the methods added will be available for all controllers.
 
 class ApplicationController < ActionController::Base
-  include AuthenticatedSystem
-  include MplistRender
-
   helper :all
   protect_from_forgery
 
   # 通过插件开启gzip压缩
   after_filter OutputCompressionFilter
-
 end
