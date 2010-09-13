@@ -15,6 +15,6 @@ test:
 production:
   name: user_auth
   url: http://2010.mindpin.com/
-  master_url: http://2010.mindpin.com/config
-  user_logo_file_path_root: /root/mindpin_base/mindpin_education_files/
-  user_logo_file_url_root: http://img.edu.mindpin.com/
+  master_url: http://2010.mindpin.com/
+  user_logo_file_path_root: /web/2010/images/
+  user_logo_file_url_root: http://img.2010.mindpin.com/
