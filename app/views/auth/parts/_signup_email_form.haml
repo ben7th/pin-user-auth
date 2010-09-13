@@ -1,0 +1,6 @@
+- mindpin_form_for @user do |f|
+  - if !flash_info.blank?
+    = flash_info
+  = f.text_field :email,:maxlength=>50,:desc=>'必填，用于登录'
+  .form_actions
+    = f.submit "发送注册激活邮件"

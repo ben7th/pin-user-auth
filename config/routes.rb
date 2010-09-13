@@ -9,6 +9,10 @@ ActionController::Routing::Routes.draw do |map|
   map.login '/login',:controller=>'sessions',:action=>'new'
   map.logout '/logout',:controller=>'sessions',:action=>'destroy'
   map.signup '/signup',:controller=>'users',:action=>'new'
+  map.signup_mail '/signup_email',:controller=>'users',:action=>'signup_email'
+  map.signup_mail_action '/signup_email_action',:controller=>'users',:action=>'signup_email_action',:conditions=>{:method=>:post}
+  map.signup_mail_action '/active_form',:controller=>'users',:action=>'active_form',:conditions=>{:method=>:get}
+  map.signup_mail_action '/active',:controller=>'users',:action=>'active',:conditions=>{:method=>:put}
 
   map.resource :session
   map.resources :users

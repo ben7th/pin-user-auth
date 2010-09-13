@@ -4,27 +4,25 @@ class UsersController < ApplicationController
   include SessionsMethods
 
   def new
-    online_key=session[:online_key]
-    reset_session
-    session[:online_key]=online_key
-    @user=User.new
-    render :layout=>'auth',:template=>'auth/signup'
+#    online_key=session[:online_key]
+#    reset_session
+#    session[:online_key]=online_key
+    @user = User.new
+    render :layout=>'auth',:template=>'/auth/signup.haml'
   end
 
   def create
     # 出于安全性考虑，新用户注册时销毁cookies令牌
     destroy_cookie_token
-    @user=User.new(params[:user])
-    
-    if @user.save
-      # 发送激活邮件
+    @user = User.new(params[:user])
+    @user = User.create_user_only_email(@user)
+    if @user.errors.blank?
       @user.send_activation_mail
-      # flash[:success]="注册成功，请使用新帐号登陆"
-      login_after_create(@user)
-    else
-      flash.now[:error]=@user.errors.first[1]
-      render :layout=>'auth',:template=>'auth/signup'
+      flash[:success] = "邮件已经发送，请查收"
+      return redirect_to :action=>:new
     end
+    flash[:error] = @user.errors.first[1]
+    redirect_to :action=>:new
   end
 
   def login_after_create(user)
@@ -92,6 +90,28 @@ class UsersController < ApplicationController
     @user.errors.add(:password_confirmation,"密码和确认密码必须相同") if params[:user][:password] != params[:user][:password_confirmation]
     flash.now[:error] = @user.errors.first[1] if !@user.errors.blank?
     render :template=>"users/reset_password"
+  end
+
+  # 注册并填写信息界面
+  def active_form
+    @user = User.find_by_activation_code(params[:code])
+    if @user.blank?
+      return render :layout=>"auth",:text=>"激活码无效，或者此邮箱已经激活"
+    end
+    render :layout=>'auth',:template=>'/auth/parts/signup_info_form'
+  end
+
+  # 激活
+  def active
+    @user = User.new(params[:user])
+    @user.activated_at = Time.now
+    if @user.valid?
+      u = User.find_by_email(params[:user][:email])
+      u.activate(@user)
+      return redirect_to "/"
+    end
+    flash.now[:error] = @user.errors.first[1]
+    return render :layout=>'auth',:template=>'/auth/parts/signup_info_form'
   end
 
   private

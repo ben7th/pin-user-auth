@@ -58,19 +58,19 @@ class User < UserBase
   # 用户名：是2-20位的中文或者英文，但是两者不能混用
   # 两次密码输入必须一样，电子邮箱格式必须正确
   # 密码允许为空，但是如果输入了，就必须是4-32
-  validates_presence_of :name
+  validates_presence_of :name,:if=>Proc.new{|u|!u.activated_at.blank?}
   validates_presence_of :email
-  validates_uniqueness_of :email,:case_sensitive=>false,:on=>:create
-  validates_format_of :email,:with=>/^([A-Za-z0-9_]+)([\.\-\+][A-Za-z0-9_]+)*(\@[A-Za-z0-9_]+)([\.\-][A-Za-z0-9_]+)*(\.[A-Za-z0-9_]+)$/
+#  validates_uniqueness_of :email,:case_sensitive=>false,:if=>Proc.new{|u|u.activated_at.blank?}
+  validates_format_of :email,:with=>/^([A-Za-z0-9_]+)([\.\-\+][A-Za-z0-9_]+)*(\@[A-Za-z0-9_]+)([\.\-][A-Za-z0-9_]+)*(\.[A-Za-z0-9_]+)$/,:if=>Proc.new{|u|u.activated_at.blank?}
 
-  validates_format_of :name,:with=>/^([A-Za-z0-9]{1}[A-Za-z0-9_]+)$|^([一-龥]+)$/
-  validates_length_of :name, :in => 2..20
+  validates_format_of :name,:with=>/^([A-Za-z0-9]{1}[A-Za-z0-9_]+)$|^([一-龥]+)$/,:if=>Proc.new{|u|!u.activated_at.blank?}
+  validates_length_of :name, :in => 2..20,:if=>Proc.new{|u|!u.activated_at.blank?}
 
-  validates_presence_of :password,:on=>:create
-  validates_presence_of :password_confirmation,:on=>:create
+  validates_presence_of :password,:if=>Proc.new{|u|!u.activated_at.blank?}
+  validates_presence_of :password_confirmation,:if=>Proc.new{|u|!u.activated_at.blank?}
   attr_accessor :password_confirmation
-  validates_confirmation_of :password
-  validates_length_of :password, :in => 4..32, :allow_blank=>true
+  validates_confirmation_of :password,:if=>Proc.new{|u|!u.activated_at.blank?}
+  validates_length_of :password, :in => 4..32, :allow_blank=>true,:if=>Proc.new{|u|!u.activated_at.blank?}
 
   named_scope :recent,lambda{|*args|
     {:limit=>args.first||5}
@@ -112,9 +112,11 @@ class User < UserBase
   end
 
   # 激活
-  def activate
+  def activate(user)
     self.activation_code = nil
     self.activated_at = Time.now
+    self.name = user.name
+    self.password = user.password
     self.save(false)
   end
   
@@ -157,6 +159,18 @@ class User < UserBase
   def _resize_logo(img,type,width,height)
     img_type = img.resize(width,height)
     img_type.write File.expand_path(LOGO_PATH_ROOT)+"/users/logos/#{self.id}/#{type}/#{self.logo_file_name}"
+  end
+
+  # 根据填写的email查找用户表中的用户，如果，该email的不存在用户表中，则新建之
+  def self.create_user_only_email(user)
+    old_user = User.find_by_email(user.email)
+    if old_user && !old_user.activated_at.blank?
+      user.errors.add(:email,"此邮箱已经被使用，请换用其他邮箱")
+      return user
+    end
+    return old_user if old_user
+    user.save
+    return user
   end
 
 end

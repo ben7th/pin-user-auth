@@ -39,6 +39,8 @@ cn:
             password:
               blank: 密码不能为空
               too_short: 密码过短(不能少于{{count}}个字符)
-              confirmation: 密码与确认值不匹配
+              confirmation: 两次输入的密码不同
             password_confirmation:
               blank: 确认密码不能为空
+      messages:
+        record_invalid: record_invalid
