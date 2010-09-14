@@ -56,12 +56,7 @@ class SessionsController < ApplicationController
     self.current_user=User.authenticate(params[:email],params[:password])
     if logged_in?
       after_logged_in()
-      if session[:return_to]
-        redirect_to session[:return_to]
-        session[:return_to] = nil
-        return
-      end
-      redirect_to root_url
+      return redirect_back_or_default(root_url)
     else
       flash[:error]="用户名/密码不正确"
       redirect_to login_url
