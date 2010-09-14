@@ -61,7 +61,6 @@ class AccountController < ActionController::Base
   def activate
     @user = User.find_by_activation_code(params[:activation_code])
     if @user
-      self.current_user = @user
       @user.activate
     else
       @failure = true
