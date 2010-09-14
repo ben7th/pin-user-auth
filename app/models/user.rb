@@ -106,11 +106,6 @@ class User < UserBase
     UserObserver.instance.send_activation_mail(self)
   end
 
-  # 是否激活
-  def activated?
-    !activated_at.blank?
-  end
-
   # 激活
   def activate
     self.activation_code = nil
