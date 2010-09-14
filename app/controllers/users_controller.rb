@@ -4,9 +4,11 @@ class UsersController < ApplicationController
   include SessionsMethods
 
   def new
-#    online_key=session[:online_key]
-#    reset_session
-#    session[:online_key]=online_key
+    online_key=session[:online_key]
+    flash_info = session['flash']
+    reset_session
+    session[:online_key]=online_key
+    session['flash']=flash_info
     @user = User.new
     render :layout=>'auth',:template=>'/auth/signup.haml'
   end
