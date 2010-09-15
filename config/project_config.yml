@@ -2,14 +2,14 @@ development:
   name: user_auth
   url: http://dev.2010.mindpin.com/
   master_url: http://dev.2010.mindpin.com/
-  user_logo_file_path_root: /root/mindpin_base/mindpin_education_files/
+  user_logo_file_path_root: /web/2010/devel_images
   user_logo_file_url_root: http://dev.img.2010.mindpin.com/
 
 test:
   name: user_auth
   url: http://dev.2010.mindpin.com/
   master_url: http://dev.2010.mindpin.com/
-  user_logo_file_path_root: /root/mindpin_base/mindpin_education_files/
+  user_logo_file_path_root: /web/2010/devel_images
   user_logo_file_url_root: http://dev.img.2010.mindpin.com/
 
 production:
