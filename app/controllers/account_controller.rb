@@ -1,5 +1,5 @@
 class AccountController < ActionController::Base
-  before_filter :login_required
+  before_filter :login_required,:except=>[:activate]
   # 基本信息
   def base;end
   # 头像

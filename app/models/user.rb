@@ -66,7 +66,7 @@ class User < UserBase
   validates_format_of :name,:with=>/^([A-Za-z0-9]{1}[A-Za-z0-9_]+)$|^([一-龥]+)$/
   validates_length_of :name, :in => 2..20
 
-  validates_presence_of :password
+  validates_presence_of :password,:on=>:create
   validates_presence_of :password_confirmation,:on=>:create
   attr_accessor :password_confirmation
   validates_confirmation_of :password
@@ -117,7 +117,7 @@ class User < UserBase
   def forgot_password
     @forgotten_password = true
     self.make_password_reset_code
-    self.save
+    self.save(false)
     UserObserver.instance.send_forgotpassword_mail(self)
   end
 

@@ -6,7 +6,9 @@
     %div 您的账号：
     .font18.bold{:style => "color:#E8641B; margin:5px 0;"}= @user.email
     %div 已经激活成功 :)
-    .grid_9.push_7=render :partial=>'auth/parts/login_form'
+    .grid_9.push_7
+      -if current_user != @user
+        =render :partial=>'auth/parts/login_form'
   = hr
   %div
     = link_to "&gt; 返回首页","/"
