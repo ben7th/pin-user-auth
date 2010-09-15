@@ -40,6 +40,10 @@ class AccountController < ActionController::Base
   # 修改头像
   def avatared_submit
     if !params[:copper]
+      if params[:user].blank?
+        flash.now[:error] = "没有选择图片，请选择"
+        return render :action=>:avatared
+      end
       current_user.update_attributes({:logo=>params[:user][:logo]})
       return render :template=>"account/copper_avatared"
     else
