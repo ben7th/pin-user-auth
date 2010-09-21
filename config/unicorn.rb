@@ -1,7 +1,7 @@
 
 worker_processes 3
 
-listen '/tmp/nginx/sockets/user_auth_unicorn.sock', :backlog => 2048
+listen '/web/2010/sockets/user_auth_unicorn.sock', :backlog => 2048
 timeout 30
 
 
