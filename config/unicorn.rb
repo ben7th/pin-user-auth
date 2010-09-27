@@ -1,20 +1,32 @@
-
+# worker 数量
 worker_processes 3
 
-listen '/tmp/nginx/sockets/user_auth_unicorn.sock', :backlog => 2048
-timeout 30
+# 日志位置
+stderr_path("/web/2010/logs/unicorn-user-auth-error.log")
+stdout_path("/web/2010/logs/unicorn-user-auth.log")
 
-pid_file = "/web/2010/pids/unicorn_pin_user_auth.pid"
-pid pid_file
+# 加载 超时设置 监听
 preload_app true
+timeout 30
+listen '/web/2010/sockets/unicorn-user-auth.sock', :backlog => 2048
+
+# REE GC
+if GC.respond_to?(:copy_on_write_friendly=)
+  GC.copy_on_write_friendly = true
+end
 
 before_fork do |server, worker|
-  old_pid = pid_file + '.oldbin'
+  old_pid = RAILS_ROOT + '/tmp/pids/unicorn.pid.oldbin'
   if File.exists?(old_pid) && server.pid != old_pid
     begin
       Process.kill("QUIT", File.read(old_pid).to_i)
     rescue Errno::ENOENT, Errno::ESRCH
-      # someone else did our job for us
+      # ...
     end
   end
+end
+
+after_fork do |server, worker|
+  ActiveRecord::Base.establish_connection
+  CHIMNEY.client.connect_to_server
 end
