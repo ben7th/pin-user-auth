@@ -24,6 +24,7 @@ Rails::Initializer.run do |config|
   
   config.gem "pie-auth"
   config.gem "pie-ui"
+  config.gem "pie-service-lib"
   config.gem "uuidtools"
   config.gem "responds_to_parent"
   # Only load the plugins named here, in the order given (default is alphabetical).
