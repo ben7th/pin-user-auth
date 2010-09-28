@@ -1,4 +1,4 @@
-require "pie-auth"
+require "pie-service-lib"
 class UserMetal < BaseMetal
   def self.routes
     {:method=>'GET',:regexp=>/^\/users\/(.+).xml/}
