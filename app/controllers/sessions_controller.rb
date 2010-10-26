@@ -1,5 +1,6 @@
 class SessionsController < ApplicationController
   skip_before_filter :user_redirect
+  skip_before_filter :verify_authenticity_token,:only=>[:login_by_extension]
 
   include SessionsMethods
 
@@ -72,6 +73,15 @@ class SessionsController < ApplicationController
       destroy_online_record(user)
     end
     redirect_to root_url
+  end
+
+  def login_by_extension
+    self.current_user = (current_user ||User.authenticate(params[:email],params[:password]))
+    if logged_in?
+      after_logged_in()
+      return render :status=>200,:text=>{:id=>current_user.id,:name=>current_user.name,:email=>current_user.email,:avster=>current_user.logo.url}.to_json
+    end
+    return render :status=>401,:text=>"用户名或者密码错误"
   end
 
 end

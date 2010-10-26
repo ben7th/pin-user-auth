@@ -3,6 +3,7 @@
 
 class ApplicationController < ActionController::Base
   helper :all
+
   protect_from_forgery
 
   # 通过插件开启gzip压缩
