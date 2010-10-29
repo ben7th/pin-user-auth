@@ -7,7 +7,7 @@ ActionController::Routing::Routes.draw do |map|
   map.login_fbox '/login_fbox',:controller=>'sessions',:action=>'login_fbox'
   map.login_fbox_create '/login_fbox_create',:controller=>'sessions',:action=>'login_fbox_create'
   map.login '/login',:controller=>'sessions',:action=>'new'
-  map.login '/login_by_extension',:controller=>'sessions',:action=>'login_by_extension'
+  map.login_by_extension '/login_by_extension',:controller=>'sessions',:action=>'login_by_extension'
   map.logout '/logout',:controller=>'sessions',:action=>'destroy'
   map.signup '/signup',:controller=>'users',:action=>'new'
 
