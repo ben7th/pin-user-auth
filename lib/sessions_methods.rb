@@ -37,8 +37,8 @@ module SessionsMethods
   end
 
   def destroy_cookie_token
-    cookies.delete :token
     cookies.delete :logged_in_for_plugin # 清除插件cookie
+    cookies.delete :token
   end
 
   def destroy_online_record(user)
