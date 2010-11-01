@@ -32,15 +32,13 @@ module SessionsMethods
   def reset_session_with_online_key
     online_key=session[:online_key]
     reset_session
-
-    delete_logged_in_for_plugin_token # 清除插件cookie
-
     session[:online_key]=online_key
     flash.now[:notice]="您已经退出了"
   end
 
   def destroy_cookie_token
     cookies.delete :token
+    cookies.delete :logged_in_for_plugin # 清除插件cookie
   end
 
   def destroy_online_record(user)
