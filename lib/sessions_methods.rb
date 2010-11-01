@@ -34,6 +34,8 @@ module SessionsMethods
     reset_session
     session[:online_key]=online_key
     flash.now[:notice]="您已经退出了"
+
+    delete_logged_in_for_plugin_token # 清除插件cookie
   end
 
   def destroy_cookie_token
